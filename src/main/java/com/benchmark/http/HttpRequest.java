@@ -1,9 +1,7 @@
 package com.benchmark.http;
 
-import com.benchmark.constant.RequestType;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import com.alibaba.fastjson.JSONObject;
+import java.util.Map;
 
 /**
  * @author hejianglong
@@ -11,19 +9,74 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
  */
 public class HttpRequest {
 
-    private static CloseableHttpClient httpClient;
-
-    static {
-        PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
-        cm.setMaxTotal(100);
-        cm.setDefaultMaxPerRoute(20);
-        cm.setDefaultMaxPerRoute(50);
-        httpClient = HttpClients.custom().setConnectionManager(cm).build();
-    }
-
     private String requestType;
 
-    public HttpRequest(String requestType) {
+    private String requestUrl;
+
+    private String methodType;
+
+    private HttpRequestHeader httpRequestHeader;
+
+    private HttpBody httpBody;
+
+    private Handler handler;
+
+    public HttpRequest(String methodType, String requestUrl, String requestType) {
         this.requestType = requestType;
+        this.requestUrl = requestUrl;
+        this.methodType = methodType;
+        httpRequestHeader = new HttpRequestHeader();
+        httpBody = new HttpBody();
+        handler = new Handler();
+    }
+
+    public HttpRequest withHeaders(String key, String value) {
+        httpRequestHeader.add(key, value);
+        return this;
+    }
+
+    public Handler withBody(Map<String, Object> objectMap) {
+        httpBody.setJsonData(JSONObject.toJSONString(objectMap));
+        return handler.setHttpInfo(this);
+    }
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
+
+    public String getRequestUrl() {
+        return requestUrl;
+    }
+
+    public void setRequestUrl(String requestUrl) {
+        this.requestUrl = requestUrl;
+    }
+
+    public String getMethodType() {
+        return methodType;
+    }
+
+    public void setMethodType(String methodType) {
+        this.methodType = methodType;
+    }
+
+    public HttpRequestHeader getHttpRequestHeader() {
+        return httpRequestHeader;
+    }
+
+    public void setHttpRequestHeader(HttpRequestHeader httpRequestHeader) {
+        this.httpRequestHeader = httpRequestHeader;
+    }
+
+    public HttpBody getHttpBody() {
+        return httpBody;
+    }
+
+    public void setHttpBody(HttpBody httpBody) {
+        this.httpBody = httpBody;
     }
 }

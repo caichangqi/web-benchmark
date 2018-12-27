@@ -9,11 +9,11 @@ import com.benchmark.http.HttpRequest;
  */
 public class HttpBenchmark {
 
-    public static HttpRequest form() {
-        return new HttpRequest(RequestType.FORM);
+    public static HttpRequest form(String methodType, String requestUrl) {
+        return new HttpRequest(methodType, requestUrl, RequestType.FORM);
     }
 
-    public static HttpRequest json() {
-        return new HttpRequest(RequestType.JSON);
+    public HttpRequest json(String methodType, String requestUrl) {
+        return new HttpRequest(methodType, requestUrl, RequestType.JSON);
     }
 }
