@@ -19,9 +19,9 @@ package com.benchmark.constant;
  * @email hejlong@163.com
  * @Desc
  */
-public interface MethodType {
-
-    String POST = "post";
-
-    String GET = "get";
+public enum MethodType {
+    POST,
+    GET,
+    PUT,
+    DELETE
 }

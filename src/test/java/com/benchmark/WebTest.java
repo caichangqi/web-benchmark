@@ -1,23 +1,10 @@
-/*
- * Project: com.benchmark
- * 
- * File Created at 2018/12/27
- * 
- * Copyright 2018 CMCC Corporation Limited.
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of
- * ZYHY Company. ("Confidential Information").  You shall not
- * disclose such Confidential Information and shall use it only in
- * accordance with the terms of the license.
- */
 package com.benchmark;
 
-import com.benchmark.boot.HttpBenchmark;
-import com.benchmark.constant.MethodType;
+import com.alibaba.fastjson.JSONObject;
+import com.benchmark.constant.RequestType;
 import org.junit.Test;
-import java.util.HashMap;
-import java.util.Map;
+import static com.benchmark.http.GetRequest.getRequest;
+import static com.benchmark.http.PostRequest.postRequest;
 
 /**
  * @author hejianglong
@@ -28,14 +15,52 @@ import java.util.Map;
 public class WebTest {
 
     @Test
-    public void test() {
-        String requestUrl = "";
-        Map<String, Object> data = new HashMap<>();
+    public void postJSONTest() throws InterruptedException {
+        // 压测试数量 threadNum
+        postRequest("http://localhost:8888/api/test3", RequestType.JSON)
+            .witheParams("name", "long")
+            .witheParams("age", "abiao")
+            .withHeaders("clientType", "ios")
+            .withBody(getJSONObject())
+            .withThreadNum(200)
+            .execute();
+    }
 
-        HttpBenchmark
-            .form(MethodType.GET, requestUrl)
-            .withHeaders("clientType", "ANDROID")
-            .withBody(data)
-            .done();
+    @Test
+    public void getJSONTest() throws InterruptedException {
+        getRequest("http://localhost:8888/api/test1", RequestType.JSON)
+            .witheParams("name", "long")
+            .witheParams("age", "abiao")
+            .withHeaders("clientType", "ios")
+            .withThreadNum(100)
+            .execute();
+    }
+
+    @Test
+    public void postFormTest() throws InterruptedException {
+        // 压测试数量 threadNum
+        postRequest("http://localhost:8888/api/test3", RequestType.FORM)
+            .witheParams("name", "long")
+            .witheParams("age", "abiao")
+            .withHeaders("clientType", "ios")
+            .withBody(getJSONObject())
+            .withThreadNum(200)
+            .execute();
+    }
+
+    @Test
+    public void getFormTest() throws InterruptedException {
+        getRequest("http://localhost:8888/api/test1", RequestType.FORM)
+            .witheParams("name", "long")
+            .witheParams("age", "abiao")
+            .withHeaders("clientType", "ios")
+            .withThreadNum(100)
+            .execute();
+    }
+
+    private JSONObject getJSONObject() {
+        JSONObject object = new JSONObject();
+        object.fluentPut("id", "11").fluentPut("name", "abcd");
+        return object;
     }
 }
