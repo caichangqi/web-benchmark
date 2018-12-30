@@ -30,7 +30,7 @@
                 return object;
             }
 
-    #####FORM的用法除了RequestType不同其它用法一样
+    ##### FORM的用法除了RequestType不同其它用法一样
 3. FORM, GET
 
         postRequest("http://localhost:8888/api/test3", RequestType.FORM)
