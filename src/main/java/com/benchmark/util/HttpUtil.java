@@ -12,11 +12,13 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
  */
 public class HttpUtil {
 
+    private static final int MAX_TOTAL = 3 * 10000;
+
     public static CloseableHttpClient getHttpClient() {
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
-        cm.setMaxTotal(100);
-        cm.setDefaultMaxPerRoute(20);
-        cm.setDefaultMaxPerRoute(50);
+        cm.setMaxTotal(MAX_TOTAL);
+        cm.setDefaultMaxPerRoute(MAX_TOTAL);
+        cm.setDefaultMaxPerRoute(MAX_TOTAL);
         return HttpClients.custom().setConnectionManager(cm).build();
     }
 }
